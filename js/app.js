@@ -75,6 +75,10 @@ function renderImgs() {
     centerImgEl.src = allImgs[imgTwoIndex].url;
     rightImgEl.src = allImgs[imgThreeIndex].url;
 
+    leftImgEl.name = allImgs[imgOneIndex].name;
+    centerImgEl.name = allImgs[imgTwoIndex].name;
+    rightImgEl.name = allImgs[imgThreeIndex].name;
+
     allImgs[imgOneIndex].timeShown++;
     allImgs[imgTwoIndex].timeShown++;
     allImgs[imgThreeIndex].timeShown++;
@@ -87,9 +91,8 @@ function imgClick(event) {
     let imageClicked = event.target;
 
     for (let i = 0; i < allImgs.length; i++) {
-        if (imageClicked.name === allImgs[i].name) {
+        if (imageClicked.name == allImgs[i].name) {
             allImgs[i].clicks++;
-            console.log(allImgs[i]);
         }
     }
     renderImgs();
@@ -97,11 +100,32 @@ function imgClick(event) {
         leftImgEl.removeEventListener("click", imgClick);
         centerImgEl.removeEventListener("click", imgClick);
         rightImgEl.removeEventListener("click", imgClick);
+        createButton();
+        let buttonEl = document.getElementById("tally");
+        buttonEl.addEventListener("click", statResults);
     }
 }
+
+function createButton() {
+    let totals = document.getElementById("results");
+
+    let buttonEl = document.createElement("button");
+    buttonEl.innerText = "View Results";
+    buttonEl.setAttribute("id", "tally");
+    totals.appendChild(buttonEl);
+}
+
+function statResults() {
+    let totals = document.getElementById("totals");
+    for (let i = 0; i < allImgs.length; i++) {
+        //create li for each index busimage
+        let resultStat = document.createElement("li");
+        resultStat.innerText = `${allImgs[i].name} had ${allImgs[i].clicks} votes and was seen ${allImgs[i].timeShown} times.`;
+        totals.appendChild(resultStat);
+    }
+}
+
 renderImgs();
 leftImgEl.addEventListener("click", imgClick);
 centerImgEl.addEventListener("click", imgClick);
 rightImgEl.addEventListener("click", imgClick);
-
-console.log(allImgs);
