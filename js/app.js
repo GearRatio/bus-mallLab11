@@ -1,7 +1,8 @@
 "use strict";
 
-//identify left, center, right images
+//products is the parent element
 let allImgEls = document.getElementById("products");
+//identify left, center, right images
 let leftImgEl = document.getElementById("left");
 let centerImgEl = document.getElementById("center");
 let rightImgEl = document.getElementById("right");
@@ -52,6 +53,7 @@ function busImage(name, fileExtension = "jpg") {
     this.url = `img/${name}.${fileExtension}`;
     allImgs.push(this);
 }
+//object literal for chartjs
 
 function buildImg() {
     for (let i = 0; i < imgNames.length; i++) {
@@ -69,25 +71,23 @@ function randomImgNum() {
 
 //render function
 function renderImgs() {
-    let clickedImg = []; // stores three numbers
-    console.log(leftImgEl.name, rightImgEl.name, centerImgEl.name);
+    let clickedImg = []; // stores three random numbers
+    // console.log(leftImgEl.name, rightImgEl.name, centerImgEl.name);
 
     while (clickedImg.length < 3) {
         let randomNum = randomImgNum();
-        console.log(leftImgEl.name, allImgs[randomNum]);
         if (
             allImgs[randomNum].name !== leftImgEl.name &&
             allImgs[randomNum].name !== rightImgEl.name &&
             allImgs[randomNum].name !== centerImgEl.name
         ) {
-            //
-        }
-        if (!clickedImg.includes(randomNum)) {
-            //if clicked img doesn't contain number then push it
-            clickedImg.push(randomNum);
+            if (!clickedImg.includes(randomNum)) {
+                //if clicked img doesn't contain number then push it
+                // console.log(allImgs[randomNum]);
+                clickedImg.push(randomNum);
+            }
         }
     }
-
     imgOneIndex = clickedImg.pop();
     imgTwoIndex = clickedImg.pop();
     imgThreeIndex = clickedImg.pop();
@@ -117,40 +117,54 @@ function imgClick(event) {
         }
     }
     renderImgs();
+    //once 25 clicks achieved remove event listeners and show button.
     if (totalClicks === 25) {
-        leftImgEl.removeEventListener("click", imgClick);
-        centerImgEl.removeEventListener("click", imgClick);
-        rightImgEl.removeEventListener("click", imgClick);
+        removeClicks();
         createButton();
         let buttonEl = document.getElementById("tally");
         buttonEl.addEventListener("click", statResults);
+        //need to remove event listener on button once clicked
     }
+}
+
+//remove event listener from photos.
+function removeClicks() {
+    leftImgEl.removeEventListener("click", imgClick);
+    centerImgEl.removeEventListener("click", imgClick);
+    rightImgEl.removeEventListener("click", imgClick);
 }
 
 function createButton() {
     let totals = document.getElementById("results");
-
     let buttonEl = document.createElement("button");
     buttonEl.innerText = "View Results";
     buttonEl.setAttribute("id", "tally");
     totals.appendChild(buttonEl);
 }
+let barLabels = [];
+let barClicks = [];
+let barSeen = [];
 
-function statResults() {
+function statResults(event) {
+    event.target.remove();
     let totals = document.getElementById("totals");
     for (let i = 0; i < allImgs.length; i++) {
         //create li for each index busimage
         let resultStat = document.createElement("li");
+        barLabels.push(allImgs[i].name);
+        barClicks.push(allImgs[i].clicks);
+        barSeen.push(allImgs[i].timeShown);
         resultStat.innerText = `${allImgs[i].name} had ${allImgs[i].clicks} votes and was seen ${allImgs[i].timeShown} times.`;
         totals.appendChild(resultStat);
     }
+    renderChart();
+    console.log(barLabels, barClicks, barSeen);
 }
 
 //render data to chart
 function renderChart() {
     let chartEl = document.getElementById("bar-chart");
     chartEl.innerHTML = "";
-
     //grab canvas element
     let ctx = chartEl.getContext("2d");
     //holds names of images in array
@@ -162,28 +176,25 @@ function renderChart() {
     var myChart = new Chart(ctx, {
         type: "bar",
         data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            //needs a reference to object
+            labels: barLabels,
             datasets: [{
-                label: "# of Votes",
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    "rgba(255, 99, 132, 0.2)",
-                    "rgba(54, 162, 235, 0.2)",
-                    "rgba(255, 206, 86, 0.2)",
-                    "rgba(75, 192, 192, 0.2)",
-                    "rgba(153, 102, 255, 0.2)",
-                    "rgba(255, 159, 64, 0.2)",
-                ],
-                borderColor: [
-                    "rgba(255, 99, 132, 1)",
-                    "rgba(54, 162, 235, 1)",
-                    "rgba(255, 206, 86, 1)",
-                    "rgba(75, 192, 192, 1)",
-                    "rgba(153, 102, 255, 1)",
-                    "rgba(255, 159, 64, 1)",
-                ],
-                borderWidth: 1,
-            }, ],
+                    //
+                    label: "Seen",
+                    data: barSeen,
+                    backgroundColor: ["rgba(255, 99, 132, 0.2)"],
+                    borderColor: ["rgba(255, 99, 132, 1)"],
+                    borderWidth: 1,
+                },
+                {
+                    //
+                    label: "Clicks",
+                    data: barClicks,
+                    backgroundColor: ["rgba(255, 99, 132, 0.2)"],
+                    borderColor: ["rgba(255, 99, 132, 1)"],
+                    borderWidth: 1,
+                },
+            ],
         },
         options: {
             scales: {
