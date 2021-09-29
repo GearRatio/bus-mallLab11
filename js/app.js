@@ -5,6 +5,13 @@ let allImgEls = document.getElementById("products");
 let leftImgEl = document.getElementById("left");
 let centerImgEl = document.getElementById("center");
 let rightImgEl = document.getElementById("right");
+
+let onScreen = [
+    document.getElementById("left"),
+    document.getElementById("center"),
+    document.getElementById("right"),
+];
+
 let imgOneIndex = null;
 let imgTwoIndex = null;
 let imgThreeIndex = null;
