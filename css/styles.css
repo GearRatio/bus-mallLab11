@@ -1,3 +1,20 @@
+#gird-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#title {
+    background-color: lightgray;
+}
+
+#results {
+    background-color: lightgray;
+}
+
+#products {
+    background-color: lightgray;
+}
+
 .product-image {
     float: left;
     width: 250px;

@@ -5,6 +5,9 @@ let allImgEls = document.getElementById("products");
 let leftImgEl = document.getElementById("left");
 let centerImgEl = document.getElementById("center");
 let rightImgEl = document.getElementById("right");
+let imgOneIndex = null;
+let imgTwoIndex = null;
+let imgThreeIndex = null;
 
 //need total clicks
 let totalClicks = 0;
@@ -12,6 +15,7 @@ let totalRounds = 25;
 
 //array to store product
 const allImgs = [];
+// console.log(allImgs);
 const imgNames = [
     "bag",
     "banana",
@@ -59,17 +63,27 @@ function randomImgNum() {
 //render function
 function renderImgs() {
     let clickedImg = []; // stores three numbers
+    console.log(leftImgEl.name, rightImgEl.name, centerImgEl.name);
+
     while (clickedImg.length < 3) {
-        //
         let randomNum = randomImgNum();
-        while (!clickedImg.includes(randomNum)) {
+        console.log(leftImgEl.name, allImgs[randomNum]);
+        if (
+            allImgs[randomNum].name !== leftImgEl.name &&
+            allImgs[randomNum].name !== rightImgEl.name &&
+            allImgs[randomNum].name !== centerImgEl.name
+        ) {
+            //
+        }
+        if (!clickedImg.includes(randomNum)) {
             //if clicked img doesn't contain number then push it
             clickedImg.push(randomNum);
         }
     }
-    let imgOneIndex = clickedImg.pop();
-    let imgTwoIndex = clickedImg.pop();
-    let imgThreeIndex = clickedImg.pop();
+
+    imgOneIndex = clickedImg.pop();
+    imgTwoIndex = clickedImg.pop();
+    imgThreeIndex = clickedImg.pop();
 
     leftImgEl.src = allImgs[imgOneIndex].url;
     centerImgEl.src = allImgs[imgTwoIndex].url;
@@ -89,7 +103,7 @@ function imgClick(event) {
     event.preventDefault();
     totalClicks++;
     let imageClicked = event.target;
-
+    console.log(imageClicked);
     for (let i = 0; i < allImgs.length; i++) {
         if (imageClicked.name == allImgs[i].name) {
             allImgs[i].clicks++;
@@ -123,6 +137,55 @@ function statResults() {
         resultStat.innerText = `${allImgs[i].name} had ${allImgs[i].clicks} votes and was seen ${allImgs[i].timeShown} times.`;
         totals.appendChild(resultStat);
     }
+}
+
+//render data to chart
+function renderChart() {
+    let chartEl = document.getElementById("bar-chart");
+    chartEl.innerHTML = "";
+
+    //grab canvas element
+    let ctx = chartEl.getContext("2d");
+    //holds names of images in array
+    const products = [];
+
+    //need to display vote totals
+    //need to display number of times product was viewed
+
+    var myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            datasets: [{
+                label: "# of Votes",
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(255, 206, 86, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(255, 159, 64, 0.2)",
+                ],
+                borderColor: [
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)",
+                ],
+                borderWidth: 1,
+            }, ],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
 }
 
 renderImgs();

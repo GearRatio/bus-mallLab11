@@ -7,24 +7,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/styles.css">
     <title>Bus Mall</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
 </head>
 
 <body>
-    <header id="title">
-        <h1>Welcome to Bus Mall</h1>
-        <p>Select your favorite item from the 3 images shown. Repeat 25 times.</p>
-    </header>
-    <aside id="results">
-        <h1>Results</h1>
-        <ul id="totals"></ul>
+    <div id="gird-container">
+        <header id="title">
+            <h1>Welcome to Bus Mall</h1>
+            <p>Select your favorite item from the 3 images shown. Repeat 25 times.</p>
+        </header>
+        <aside id="results">
+            <h1>Results</h1>
+            <ul id="totals"></ul>
+        </aside>
+        <main id="products">
+            <img class="product-image" id="left" src="">
+            <img class="product-image" id="center" src="">
+            <img class="product-image" id="right" src="">
+            <section id="product-chart">
+                <canvas id="bar-chart"></canvas>
+            </section>
 
-    </aside>
-    <main id="products">
-        <img class="product-image" id="left" src="">
-        <img class="product-image" id="center" src="">
-        <img class="product-image" id="right" src="">
-    </main>
-
+        </main>
+    </div>
 
 
     <script src="js/app.js"></script>
