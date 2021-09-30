@@ -7,11 +7,11 @@ let leftImgEl = document.getElementById("left");
 let centerImgEl = document.getElementById("center");
 let rightImgEl = document.getElementById("right");
 
-let onScreen = [
-    document.getElementById("left"),
-    document.getElementById("center"),
-    document.getElementById("right"),
-];
+// let onScreen = [
+//     document.getElementById("left"),
+//     document.getElementById("center"),
+//     document.getElementById("right"),
+// ];
 
 let imgOneIndex = null;
 let imgTwoIndex = null;
@@ -23,7 +23,7 @@ let totalRounds = 25;
 
 //array to store product
 const allImgs = [];
-// console.log(allImgs);
+
 const imgNames = [
     "bag",
     "banana",
@@ -53,7 +53,6 @@ function busImage(name, fileExtension = "jpg") {
     this.url = `img/${name}.${fileExtension}`;
     allImgs.push(this);
 }
-//object literal for chartjs
 
 function buildImg() {
     for (let i = 0; i < imgNames.length; i++) {
@@ -72,7 +71,6 @@ function randomImgNum() {
 //render function
 function renderImgs() {
     let clickedImg = []; // stores three random numbers
-    // console.log(leftImgEl.name, rightImgEl.name, centerImgEl.name);
 
     while (clickedImg.length < 3) {
         let randomNum = randomImgNum();
@@ -83,7 +81,7 @@ function renderImgs() {
         ) {
             if (!clickedImg.includes(randomNum)) {
                 //if clicked img doesn't contain number then push it
-                // console.log(allImgs[randomNum]);
+
                 clickedImg.push(randomNum);
             }
         }
@@ -110,7 +108,7 @@ function imgClick(event) {
     event.preventDefault();
     totalClicks++;
     let imageClicked = event.target;
-    console.log(imageClicked);
+
     for (let i = 0; i < allImgs.length; i++) {
         if (imageClicked.name == allImgs[i].name) {
             allImgs[i].clicks++;
@@ -123,7 +121,6 @@ function imgClick(event) {
         createButton();
         let buttonEl = document.getElementById("tally");
         buttonEl.addEventListener("click", statResults);
-        //need to remove event listener on button once clicked
     }
 }
 
@@ -141,6 +138,8 @@ function createButton() {
     buttonEl.setAttribute("id", "tally");
     totals.appendChild(buttonEl);
 }
+
+//array's for bar chart.js
 let barLabels = [];
 let barClicks = [];
 let barSeen = [];
@@ -157,8 +156,34 @@ function statResults(event) {
         resultStat.innerText = `${allImgs[i].name} had ${allImgs[i].clicks} votes and was seen ${allImgs[i].timeShown} times.`;
         totals.appendChild(resultStat);
     }
+    if (localStorage.length > 0) {
+        readData();
+    }
     renderChart();
-    console.log(barLabels, barClicks, barSeen);
+    saveStorage();
+}
+
+//saves items to local storage
+function saveStorage() {
+    localStorage.setItem("Labels", JSON.stringify(barLabels));
+    localStorage.setItem("Clicks", JSON.stringify(barClicks));
+    localStorage.setItem("Seen", JSON.stringify(barSeen));
+}
+
+//create function to read data and convert to json
+function readData() {
+    // const jsonLabel = localStorage.getItem("Labels");
+    const jsonClicks = localStorage.getItem("Clicks");
+    const jsonSeen = localStorage.getItem("Seen");
+
+    // let parsedLabel = JSON.parse(jsonLabel);
+    let parsedClicks = JSON.parse(jsonClicks);
+    let parsedSeen = JSON.parse(jsonSeen);
+
+    for (let i = 0; i < allImgs.length; i++) {
+        barClicks[i] += parsedClicks[i];
+        barSeen[i] += parsedSeen[i];
+    }
 }
 
 //render data to chart
@@ -167,12 +192,9 @@ function renderChart() {
     chartEl.innerHTML = "";
     //grab canvas element
     let ctx = chartEl.getContext("2d");
-    //holds names of images in array
-    const products = [];
 
     //need to display vote totals
     //need to display number of times product was viewed
-
     var myChart = new Chart(ctx, {
         type: "bar",
         data: {
@@ -182,17 +204,17 @@ function renderChart() {
                     //
                     label: "Seen",
                     data: barSeen,
-                    backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-                    borderColor: ["rgba(255, 99, 132, 1)"],
-                    borderWidth: 1,
+                    backgroundColor: ["rgba(66, 135, 245)"],
+                    borderColor: ["rgba(0,0,0)"],
+                    borderWidth: 2,
                 },
                 {
                     //
                     label: "Clicks",
                     data: barClicks,
-                    backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-                    borderColor: ["rgba(255, 99, 132, 1)"],
-                    borderWidth: 1,
+                    backgroundColor: ["rgba(3, 145, 8)"],
+                    borderColor: ["rgba(0,0,0)"],
+                    borderWidth: 2,
                 },
             ],
         },
