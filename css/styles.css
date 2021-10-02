@@ -1,7 +1,20 @@
 #gird-container {
     display: grid;
     grid-template-columns: 1fr 4fr;
-    grid-gap: 5px;
+    grid-gap: 8px;
+}
+
+main {
+    height: 100vh;
+    background-color: blanchedalmond;
+}
+
+aside {
+    width: 25vw;
+}
+
+section {
+    margin-top: 100px;
 }
 
 #title {
@@ -26,7 +39,7 @@ p {
 }
 
 #products {
-    background-color: lightgray;
+    /* background-color: lightgray; */
     grid-column-start: 2;
 }
 
@@ -53,3 +66,5 @@ li {
     list-style-type: none;
     text-transform: capitalize;
 }
+
+#bar-chart {}
