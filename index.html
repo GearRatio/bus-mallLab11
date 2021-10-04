@@ -5,34 +5,45 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/resetstyles.css">
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
     <title>Bus Mall</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
+    <script src="https://kit.fontawesome.com/724dee5e13.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div id="gird-container">
-        <header id="title">
+    <div class="gird-container">
+        <header id="header">
             <h1>Welcome to Bus Mall</h1>
+            <i class="fas fa-bus"></i>
             <p>Select your favorite item from the 3 images shown. Repeat <b>25</b> times.</p>
+
         </header>
+
         <aside id="results">
-            <h1>Results</h1>
+            <h1 class="side-results">Results</h1>
             <ul id="totals"></ul>
         </aside>
+
+
         <main id="products">
             <img class="product-image" id="left" src="">
             <img class="product-image" id="center" src="">
             <img class="product-image" id="right" src="">
-            <section id="product-chart">
-                <canvas id="bar-chart" style="height:75px; width:150px;"></canvas>
-            </section>
-
         </main>
+
+        <canvas id="bar-chart"></canvas>
+
+
+        <footer>
+        </footer>
+
     </div>
-
-
     <script src="js/app.js"></script>
 </body>
 
